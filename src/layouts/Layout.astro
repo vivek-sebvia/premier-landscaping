@@ -12,6 +12,24 @@ const primary = client.primaryColor || '#2d5a3d'
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script is:inline>
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+  
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    window.localStorage.setItem('theme', theme);
+  </script>
   <title>{fullTitle}</title>
   <meta name="description" content={metaDesc} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -23,10 +41,32 @@ const primary = client.primaryColor || '#2d5a3d'
       --primary: ${primary};
       --primary-dark: color-mix(in srgb, ${primary} 80%, #000);
       --primary-light: color-mix(in srgb, ${primary} 15%, #fff);
+      --bg: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --text: #1a1a1a;
+      --text-muted: #666666;
+      --card-bg: #ffffff;
+      --card-border: rgba(0,0,0,0.05);
+      --header-bg: #ffffff;
+      --header-shadow: rgba(0,0,0,0.08);
+      --footer-bg: #0f1a0f;
     }
+
+    [data-theme="dark"] {
+      --bg: #0a0e0a;
+      --bg-secondary: #121812;
+      --text: #f0f0f0;
+      --text-muted: #aaaaaa;
+      --card-bg: #161d16;
+      --card-border: rgba(255,255,255,0.05);
+      --header-bg: #0a0e0a;
+      --header-shadow: rgba(0,0,0,0.3);
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a1a; background: #fff; }
-    a { text-decoration: none; }
+    html { transition: background-color 0.3s ease, color 0.3s ease; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: var(--text); background: var(--bg); transition: background-color 0.3s ease, color 0.3s ease; }
+    a { text-decoration: none; color: inherit; }
     img { max-width: 100%; height: auto; display: block; }
 
     /* Top Bar */
@@ -63,8 +103,9 @@ const primary = client.primaryColor || '#2d5a3d'
     /* Main Header */
     .site-header {
       position: sticky; top: 0; z-index: 100;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      background: var(--header-bg);
+      box-shadow: 0 2px 12px var(--header-shadow);
+      transition: background-color 0.3s ease;
     }
     .header-inner {
       max-width: 1280px; margin: 0 auto;
@@ -85,12 +126,32 @@ const primary = client.primaryColor || '#2d5a3d'
     .logo svg { flex-shrink: 0; }
     .main-nav { display: flex; align-items: center; gap: 0.25rem; }
     .nav-link {
-      color: #333; font-weight: 500; font-size: 0.9rem;
+      color: var(--text); font-weight: 500; font-size: 0.9rem;
       padding: 0.5rem 0.85rem; border-radius: 6px;
       transition: color 0.15s, background 0.15s;
       position: relative;
     }
     .nav-link:hover, .nav-link.active { color: ${primary}; background: color-mix(in srgb, ${primary} 8%, transparent); }
+    
+    .theme-toggle {
+      background: var(--bg-secondary);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      margin-left: 1rem;
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .theme-toggle .sun-icon { display: none; }
+    [data-theme="dark"] .theme-toggle .moon-icon { display: none; }
+    [data-theme="dark"] .theme-toggle .sun-icon { display: block; }
+
     .btn-quote {
       background: ${primary}; color: #fff;
       padding: 0.6rem 1.4rem; border-radius: 6px;
@@ -106,19 +167,19 @@ const primary = client.primaryColor || '#2d5a3d'
     .menu-btn {
       display: none; background: none; border: none;
       cursor: pointer; padding: 0.4rem;
-      color: #333;
+      color: var(--text);
     }
     #mobile-nav {
       display: none; flex-direction: column;
       padding: 1rem 1.5rem 1.25rem;
-      background: #fff;
-      border-top: 1px solid #f0f0f0;
+      background: var(--header-bg);
+      border-top: 1px solid var(--card-border);
       gap: 0.15rem;
     }
     #mobile-nav a {
-      color: #333; font-weight: 500;
+      color: var(--text); font-weight: 500;
       padding: 0.6rem 0.5rem;
-      border-bottom: 1px solid #f5f5f5;
+      border-bottom: 1px solid var(--card-border);
       font-size: 0.95rem;
     }
     #mobile-nav a:last-child { border-bottom: none; }
@@ -220,6 +281,24 @@ const primary = client.primaryColor || '#2d5a3d'
       .footer-inner { grid-template-columns: 1fr; gap: 1.75rem; }
       .footer-bottom { flex-direction: column; text-align: center; }
     }
+
+    /* Lenis Smooth Scroll Styles */
+    html.lenis,
+    html.lenis body {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+    .lenis.lenis-scrolling iframe {
+      pointer-events: none;
+    }
   `}></style>
 </head>
 <body>
@@ -266,6 +345,13 @@ const primary = client.primaryColor || '#2d5a3d'
         <a href="/gallery" class={`nav-link${currentPath==='/gallery'?' active':''}`}>Gallery</a>
         <a href="/testimonials" class={`nav-link${currentPath==='/testimonials'?' active':''}`}>Reviews</a>
         <a href="/blog" class={`nav-link${currentPath==='/blog'?' active':''}`}>Blog</a>
+        <a href="/contact" class={`nav-link${currentPath==='/contact'?' active':''}`}>Contact</a>
+        
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+
         <a href="/contact" class="btn-quote">GET A QUOTE</a>
       </nav>
 
@@ -283,6 +369,7 @@ const primary = client.primaryColor || '#2d5a3d'
       <a href="/gallery">Gallery</a>
       <a href="/testimonials">Reviews</a>
       <a href="/blog">Blog</a>
+      <a href="/contact">Contact</a>
       <a href="/contact" class="btn-quote">GET A QUOTE</a>
     </div>
   </header>
@@ -384,6 +471,48 @@ const primary = client.primaryColor || '#2d5a3d'
     btn?.addEventListener('click', () => {
       if (!nav) return;
       nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Theme toggle
+    const handleToggleClick = () => {
+      const element = document.documentElement;
+      const isDark = element.getAttribute('data-theme') === 'dark';
+      const nextTheme = isDark ? 'light' : 'dark';
+      
+      element.setAttribute('data-theme', nextTheme);
+      localStorage.setItem("theme", nextTheme);
+    }
+  
+    document.getElementById("theme-toggle")?.addEventListener("click", handleToggleClick);
+
+    // Lenis Smooth Scroll Integration
+    import Lenis from 'lenis'
+    
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+      infinite: false,
+    })
+
+    function raf(time: number) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
+    // Handle internal links for Lenis
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (this: HTMLAnchorElement, e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href')!);
+        if (target instanceof HTMLElement) {
+          lenis.scrollTo(target);
+        }
+      });
     });
   </script>
 </body>

@@ -3,52 +3,381 @@ import Layout from '../../layouts/Layout.astro'
 import { client } from '../../client.config.js'
 
 export async function getStaticPaths() {
-  try {
-    const res = await fetch(
-      `${client.cmsUrl}/api/blog?where[tenant.slug][equals]=${client.tenantSlug}&limit=100`
-    )
-    const data = await res.json()
-    return (data.docs || []).map((post: any) => ({
-      params: { slug: post.slug },
-      props: { post },
-    }))
-  } catch {
-    return []
-  }
+  return [
+    { params: { slug: '5-tips-for-a-greener-lawn' } },
+    { params: { slug: 'choosing-the-right-mulch' } },
+    { params: { slug: 'benefits-of-smart-irrigation' } },
+    { params: { slug: 'ornamental-tree-pruning-guide' } }
+  ];
 }
 
-const { post } = Astro.props
-const primary = client.primaryColor || '#2d5a3d'
+const { slug } = Astro.params;
+const primary = client.primaryColor || '#8b2500';
+
+const posts = {
+  '5-tips-for-a-greener-lawn': {
+    title: "5 Tips for a Greener Lawn This Spring",
+    date: "April 15, 2026",
+    category: "Lawn Care",
+    image: "/services/lawn-care.png",
+    content: `
+      <p>A lush, vibrant green lawn is the foundation of any beautiful landscape. As spring approaches, it's time to prepare your turf for the growing season. Here are five essential tips to help you achieve a greener lawn this year.</p>
+      
+      <h2>1. Core Aeration</h2>
+      <p>Over time, soil becomes compacted, preventing water, air, and nutrients from reaching the roots. Core aeration involves removing small plugs of soil to allow the roots to breathe and expand.</p>
+
+      <h2>2. Overseeding</h2>
+      <p>Early spring is the perfect time to fill in bare spots. Overseeding helps create a thicker lawn, which naturally chokes out weeds and improves the overall appearance of your yard.</p>
+
+      <h2>3. Proper Fertilization</h2>
+      <p>Using a high-quality, slow-release fertilizer provides the necessary nutrients for deep root growth and vibrant color. Be sure to follow the recommended application rates to avoid burning the grass.</p>
+
+      <h2>4. Mow High</h2>
+      <p>One of the simplest ways to improve lawn health is to adjust your mower blade. Keeping grass taller (around 3 inches) helps shade the soil, reducing water evaporation and discouraging weed germination.</p>
+
+      <h2>5. Deep, Infrequent Watering</h2>
+      <p>Instead of light daily watering, aim for deep watering once or twice a week. This encourages the roots to grow deeper into the soil, making the lawn more drought-resistant.</p>
+    `
+  },
+  'choosing-the-right-mulch': {
+    title: "Choosing the Right Mulch for Your Flower Beds",
+    date: "April 10, 2026",
+    category: "Design",
+    image: "/services/mulching.png",
+    content: `
+      <p>Mulch is more than just a decorative element; it's a vital tool for soil health and plant growth. However, choosing the right type can be confusing. Let's break down the best options for your garden.</p>
+      <h2>Organic vs. Inorganic</h2>
+      <p>Organic mulches, like shredded bark or compost, improve soil structure as they decompose. Inorganic options, like river rock or rubber mulch, are permanent but don't nourish the soil.</p>
+    `
+  },
+  'benefits-of-smart-irrigation': {
+    title: "The Benefits of Smart Irrigation Systems",
+    date: "April 5, 2026",
+    category: "Technology",
+    image: "/services/irrigation.png",
+    content: `
+      <p>Traditional irrigation systems often waste a significant amount of water. Smart controllers use local weather data and soil moisture sensors to ensure your plants get exactly the right amount of water at the right time.</p>
+    `
+  },
+  'ornamental-tree-pruning-guide': {
+    title: "Pruning Guide: When to Trim Your Ornamental Trees",
+    date: "March 28, 2026",
+    category: "Maintenance",
+    image: "/services/tree-trimming.png",
+    content: `
+      <p>Pruning is both an art and a science. When done correctly, it enhances the natural shape of the tree and promotes healthy growth. When done incorrectly, it can invite disease and structural issues.</p>
+    `
+  }
+};
+
+const post = posts[slug] || posts['5-tips-for-a-greener-lawn'];
 ---
 
-<Layout title={post?.title || 'Blog Post'}>
+<Layout title={post.title} description={`Learn more about ${post.title} from the experts at ${client.name}.`}>
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12`}>
-    <div style="max-width:800px;margin:0 auto">
-      <a href="/blog" style={`color:${primary};font-size:0.9rem;font-weight:500`}>← Back to Blog</a>
-      <h1 style="font-size:2.25rem;font-weight:800;margin:1rem 0 0.5rem;line-height:1.25">{post?.title || 'Blog Post'}</h1>
-      {post?.createdAt && (
-        <p style="color:#6b7280;font-size:0.875rem">
-          {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-        </p>
-      )}
-    </div>
-  </section>
-
-  <section style="padding:3rem 1.5rem">
-    <div style="max-width:800px;margin:0 auto">
-      {post?.image?.url && (
-        <div style="border-radius:12px;overflow:hidden;margin-bottom:2rem;aspect-ratio:16/9">
-          <img src={post.image.url} alt={post.title} style="width:100%;height:100%;object-fit:cover" />
+  <article class="blog-post">
+    <header class="post-header">
+      <div class="container">
+        <div class="header-content">
+          <a href="/blog" class="back-link">← Back to Blog</a>
+          <span class="post-category" style={`color: ${primary}`}>{post.category}</span>
+          <h1>{post.title}</h1>
+          <div class="post-meta">
+            <span class="date">{post.date}</span>
+            <span class="sep">•</span>
+            <span class="author">By {client.name} Team</span>
+          </div>
         </div>
-      )}
-      <div style="font-size:1.05rem;line-height:1.8;color:#374151" set:html={post?.content || '<p>Content coming soon.</p>'} />
-      <div style={`margin-top:3rem;padding:1.5rem;border-radius:12px;background:${primary}12`}>
-        <h3 style="font-weight:700;margin-bottom:0.5rem">Ready to get started?</h3>
-        <p style="color:#4b5563;margin-bottom:1rem">Contact {client.name} for a free, no-obligation estimate.</p>
-        <a href="/contact" style={`background:${primary};color:#fff;padding:0.6rem 1.5rem;border-radius:8px;font-weight:600`}>Get Free Quote</a>
+      </div>
+    </header>
+
+    <div class="post-hero">
+      <div class="container">
+        <div class="image-wrapper">
+          <img src={post.image} alt={post.title} />
+        </div>
+      </div>
+    </div>
+
+    <div class="post-body">
+      <div class="container narrow">
+        <div class="content" set:html={post.content} />
+        
+        <footer class="post-footer">
+          <div class="share-box">
+            <span>Share this article:</span>
+            <div class="social-links">
+              <a href="#">FB</a>
+              <a href="#">TW</a>
+              <a href="#">LI</a>
+            </div>
+          </div>
+          <div class="author-bio" style={`border-left: 4px solid ${primary}`}>
+            <h4>About {client.name}</h4>
+            <p>We are a team of professional landscapers dedicated to creating and maintaining beautiful outdoor spaces in {client.city} and surrounding areas.</p>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </article>
+
+  <section class="related-posts">
+    <div class="container">
+      <h2 class="section-title">You Might Also <span>Like</span></h2>
+      <div class="related-grid">
+        {Object.entries(posts).filter(([k]) => k !== slug).slice(0, 3).map(([k, p]) => (
+          <a href={`/blog/${k}`} class="related-card">
+            <img src={p.image} alt={p.title} />
+            <div class="related-info">
+              <h4>{p.title}</h4>
+              <span>Read More →</span>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>
 
 </Layout>
+
+<style define:vars={{ primary }}>
+  .blog-post {
+    padding-bottom: 100px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .container.narrow {
+    max-width: 800px;
+  }
+
+  .post-header {
+    padding: 80px 0 60px;
+    text-align: center;
+  }
+
+  .back-link {
+    display: block;
+    margin-bottom: 30px;
+    color: #888;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: var(--primary);
+  }
+
+  .post-category {
+    display: block;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+
+  .post-header h1 {
+    font-size: 48px;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .post-meta {
+    font-size: 15px;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .sep {
+    color: #ccc;
+  }
+
+  .post-hero {
+    margin-bottom: 80px;
+  }
+
+  .image-wrapper {
+    width: 100%;
+    aspect-ratio: 16/7;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  }
+
+  .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .content {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .content :global(h2) {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 50px 0 25px;
+  }
+
+  .content :global(p) {
+    margin-bottom: 30px;
+  }
+
+  .post-footer {
+    margin-top: 80px;
+    padding-top: 50px;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .share-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .share-box span {
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .social-links {
+    display: flex;
+    gap: 10px;
+  }
+
+  .social-links a {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid var(--card-border);
+  }
+
+  .social-links a:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: translateY(-3px);
+  }
+
+  .author-bio {
+    background: var(--bg-secondary);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+  }
+
+  .author-bio h4 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .author-bio p {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 0;
+  }
+
+  /* Related Posts */
+  .related-posts {
+    padding: 100px 0;
+    background: var(--bg);
+  }
+
+  .section-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 50px;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .section-title span {
+    color: var(--primary);
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .related-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+    border: 1px solid var(--card-border);
+  }
+
+  .related-card img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+  }
+
+  .related-info {
+    padding: 25px;
+  }
+
+  .related-info h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.4;
+  }
+
+  .related-info span {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .related-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+  }
+
+  @media (max-width: 768px) {
+    .post-header h1 {
+      font-size: 32px;
+    }
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+    .image-wrapper {
+      aspect-ratio: 16/9;
+      border-radius: 20px;
+    }
+  }
+</style>

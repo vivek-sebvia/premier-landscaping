@@ -3,49 +3,323 @@ import Layout from '../layouts/Layout.astro'
 import { client } from '../client.config.js'
 import PageHero from '../components/PageHero.astro'
 
-let gallery = []
-try {
-  const res = await fetch(`${client.cmsUrl}/api/gallery?where[tenant.slug][equals]=${client.tenantSlug}&limit=20`)
-  gallery = (await res.json()).docs || []
-} catch {}
-
 const primary = client.primaryColor || '#8b2500'
+
+const localProjects = [
+  { id: 1, title: "Modern Hardscape", category: "Hardscape", image: "/gallery/project-1.png" },
+  { id: 2, title: "Lush Estate Lawn", category: "Lawn", image: "/gallery/project-2.png" },
+  { id: 3, title: "Floral Sanctuary", category: "Design", image: "/gallery/project-3.png" },
+  { id: 4, title: "Natural Stone Wall", category: "Hardscape", image: "/gallery/project-4.png" },
+  { id: 5, title: "Smart Irrigation", category: "Maintenance", image: "/gallery/project-5.png" },
+  { id: 6, title: "Palm Pruning", category: "Maintenance", image: "/gallery/project-6.png" },
+  { id: 7, title: "Fresh Sod Install", category: "Lawn", image: "/gallery/project-7.png" },
+  { id: 8, title: "Commercial Grounds", category: "Maintenance", image: "/gallery/project-8.png" },
+]
 ---
 
-<Layout title="Gallery" description={`View our work — ${client.name} project gallery.`}>
+<Layout title="Project Gallery" description={`Explore our portfolio of premium landscaping projects in ${client.city}.`}>
 
   <PageHero 
     title="Our Gallery" 
-    image="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1600&q=80" 
+    image="/gallery/project-1.png" 
     primary={primary}
   />
 
-  <section style="padding:4rem 1.5rem">
-    <div style="max-width:1200px;margin:0 auto">
-      {gallery.length > 0 ? (
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem">
-          {gallery.map((item: any) => (
-            <div style="border-radius:12px;overflow:hidden;border:1px solid #e5e7eb">
-              {item.image?.url && <img src={item.image.url} alt={item.title || 'Project'} style="width:100%;aspect-ratio:4/3;object-fit:cover" />}
-              {item.title && <div style="padding:0.75rem 1rem;font-weight:500;font-size:0.9rem">{item.title}</div>}
+  <section class="gallery-section">
+    <div class="container">
+      <div class="gallery-header">
+        <span class="sub-title">Our Portfolio</span>
+        <h2 class="section-title">Recent <span>Projects</span></h2>
+        <div class="filter-controls">
+          <button class="filter-btn active" data-filter="all">All Projects</button>
+          <button class="filter-btn" data-filter="Design">Design</button>
+          <button class="filter-btn" data-filter="Hardscape">Hardscape</button>
+          <button class="filter-btn" data-filter="Maintenance">Maintenance</button>
+        </div>
+      </div>
+
+      <div class="gallery-grid">
+        {localProjects.map((project) => (
+          <div class="gallery-item" data-category={project.category}>
+            <div class="gallery-img-container">
+              <img src={project.image} alt={project.title} loading="lazy" />
+              <div class="gallery-overlay">
+                <div class="overlay-content">
+                  <span class="category-tag">{project.category}</span>
+                  <h3>{project.title}</h3>
+                  <div class="view-btn">View Project <span class="arrow">→</span></div>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      ) : (
-        <div style="text-align:center;padding:4rem;color:#6b7280">
-          <div style="font-size:4rem;margin-bottom:1rem">📸</div>
-          <p style="font-size:1.1rem;font-weight:500;margin-bottom:0.5rem">Photos coming soon!</p>
-          <p style="font-size:0.875rem">Check back for project photos from our team.</p>
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section style={`padding:4rem 1.5rem;background:${primary};color:#fff;text-align:center`}>
-    <div style="max-width:700px;margin:0 auto">
-      <h2 style="font-size:1.75rem;font-weight:700;margin-bottom:1rem">Like What You See?</h2>
-      <a href="/contact" style="background:#fff;color:#111;padding:0.75rem 2rem;border-radius:10px;font-weight:700">Get Free Quote</a>
+  <section class="cta-section" style={`background: ${primary}`}>
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Start Your Project?</h2>
+        <p>Let's transform your outdoor space into something extraordinary.</p>
+        <div class="cta-btns">
+          <a href="/contact" class="btn-secondary">Get a Free Quote</a>
+          <a href="tel:${client.phone}" class="btn-outline">Call Us Now</a>
+        </div>
+      </div>
     </div>
   </section>
 
 </Layout>
+
+<style define:vars={{ primary }}>
+  .gallery-section {
+    padding: 100px 0;
+    background: var(--bg);
+  }
+
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .sub-title {
+    display: block;
+    color: var(--primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+
+  .section-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 40px;
+  }
+
+  .section-title span {
+    color: var(--primary);
+  }
+
+  .filter-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: 2px solid var(--card-border);
+    background: var(--bg);
+    color: var(--text-muted);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .gallery-item {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gallery-img-container {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    background: var(--bg-secondary);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid var(--card-border);
+  }
+
+  .gallery-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 40px;
+    opacity: 0;
+    transition: all 0.4s ease;
+    transform: translateY(20px);
+  }
+
+  .gallery-item:hover .gallery-overlay {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.1);
+  }
+
+  .overlay-content h3 {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  .category-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .view-btn {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .view-btn:hover .arrow {
+    transform: translateX(5px);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 80px 0;
+    text-align: center;
+    color: #fff;
+  }
+
+  .cta-content h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 15px;
+  }
+
+  .cta-content p {
+    font-size: 18px;
+    opacity: 0.9;
+    margin-bottom: 35px;
+  }
+
+  .cta-btns {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .btn-secondary {
+    background: var(--card-bg);
+    color: var(--primary);
+    padding: 16px 36px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: 1px solid var(--card-border);
+  }
+
+  .btn-outline {
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 14px 36px;
+    border-radius: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .btn-outline:hover {
+    background: #fff;
+    color: var(--primary);
+  }
+
+  @media (max-width: 1024px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+    .section-title {
+      font-size: 32px;
+    }
+    .cta-btns {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item') as NodeListOf<HTMLElement>;
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class from all
+      filterBtns.forEach(b => b.classList.remove('active'));
+      // Add active to current
+      btn.classList.add('active');
+
+      const filter = btn.getAttribute('data-filter');
+
+      galleryItems.forEach(item => {
+        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+          item.style.display = 'block';
+          setTimeout(() => {
+            item.style.opacity = '1';
+            item.style.transform = 'scale(1)';
+          }, 10);
+        } else {
+          item.style.opacity = '0';
+          item.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            item.style.display = 'none';
+          }, 400);
+        }
+      });
+    });
+  });
+</script>

@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro'
 import { client } from '../client.config.js'
 import PageHero from '../components/PageHero.astro'
-const primary = client.primaryColor || '#8b2500'
+
+const primary = client.primaryColor || '#2d5a3d'
 ---
 
 <Layout title="About Us" description={`Learn about ${client.name} — trusted ${client.industry} professionals in ${client.city}, ${client.state}.`}>
@@ -13,65 +14,489 @@ const primary = client.primaryColor || '#8b2500'
     primary={primary}
   />
 
-  <section style="padding:4rem 1.5rem">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem;align-items:center">
-      <div>
-        <h2 style="font-size:1.75rem;font-weight:700;margin-bottom:1.5rem">Who We Are</h2>
-        <p style="color:#4b5563;line-height:1.8;margin-bottom:1rem">
-          {client.name} is a locally owned and operated {client.industry} company serving {client.city}, {client.state} and the surrounding areas. We take pride in delivering high-quality work at fair prices.
-        </p>
-        <p style="color:#4b5563;line-height:1.8;margin-bottom:1rem">
-          Our team of licensed professionals brings years of hands-on experience to every project. Whether it's a small repair or a large installation, we treat every job with the same care and professionalism.
-        </p>
-        <p style="color:#4b5563;line-height:1.8;margin-bottom:2rem">
-          We are fully licensed and insured, giving our customers peace of mind on every job.
-        </p>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap">
-          <a href="/contact" style={`background:${primary};color:#fff;padding:0.75rem 1.75rem;border-radius:10px;font-weight:600`}>Get Free Quote</a>
-          <a href={`tel:${client.phone}`} style={`border:2px solid ${primary};color:${primary};padding:0.75rem 1.75rem;border-radius:10px;font-weight:600`}>Call Us</a>
+  <section class="about-company-section">
+    <div class="container">
+      <div class="about-grid">
+        <!-- Left: Image Grid -->
+        <div class="image-grid-container">
+          <div class="grid-images">
+            <div class="img-box top-left">
+              <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&q=80" alt="Garden care" />
+            </div>
+            <div class="img-box top-right wood-bg">
+              <div class="dot-accent"></div>
+            </div>
+            <div class="img-box bottom-large">
+              <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?w=800&q=80" alt="Professional Gardner" />
+            </div>
+          </div>
+          <!-- Watermark icon bottom left -->
+          <div class="watermark-icon">
+            <svg viewBox="0 0 100 100" width="120" height="120" opacity="0.1">
+               <path d="M20 80 Q20 20 80 20" fill="none" stroke="currentColor" stroke-width="2" />
+               <path d="M30 70 Q30 30 70 30" fill="none" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Right: Content -->
+        <div class="about-content">
+          <div class="section-badge">
+            <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22V12M12 12C12 7 7 3 2 4c0 5 4 9 10 8M12 12c0-5 5-9 10-8-1 5-5 8-10 8"/>
+            </svg>
+            About Company
+          </div>
+
+          <h2 class="about-title">
+            Welcome to Experience<br />{client.industry} Services.
+          </h2>
+
+          <p class="about-description">
+            We are dedicated to providing the highest quality {client.industry.toLowerCase()} services in {client.city}. 
+            Our team of experts uses modern techniques and sustainable practices to ensure your satisfaction on every project.
+          </p>
+
+          <div class="features-and-badge">
+            <ul class="features-list">
+              <li>
+                <span class="check-icon">✓</span>
+                Tools for {client.industry.toLowerCase()}
+              </li>
+              <li>
+                <span class="check-icon">✓</span>
+                Shaping outdoor spaces
+              </li>
+              <li>
+                <span class="check-icon">✓</span>
+                Expert plant care
+              </li>
+              <li>
+                <span class="check-icon">✓</span>
+                Local flora expertise
+              </li>
+            </ul>
+
+            <div class="experience-badge">
+              <div class="badge-inner">
+                <span class="badge-text-top">We're</span>
+                <span class="badge-number">20+</span>
+                <span class="badge-text-bottom">Years Of Experience</span>
+              </div>
+              <div class="leaf-float">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                   <path d="M12 22C12 22 20 18 20 12C20 6 12 2 12 2C12 2 4 6 4 12C4 18 12 22 12 22Z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-footer">
+            <a href="/contact" class="btn-learn-more">
+              LEARN MORE <span class="arrow">›</span>
+            </a>
+
+            <div class="founder-info">
+              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&q=80" alt="Founder" class="founder-img" />
+              <div class="founder-text">
+                <span class="founder-name">Jon Martin</span>
+                <span class="founder-role">Co Founder</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-        {[
-          { number: '500+', label: 'Projects Completed' },
-          { number: '10+', label: 'Years Experience' },
-          { number: '100%', label: 'Licensed & Insured' },
-          { number: '5★', label: 'Average Rating' },
-        ].map(stat => (
-          <div style="padding:1.5rem;border-radius:12px;border:1px solid #e5e7eb;text-align:center">
-            <div style={`font-size:2rem;font-weight:800;color:${primary};margin-bottom:0.35rem`}>{stat.number}</div>
-            <div style="font-size:0.875rem;color:#6b7280">{stat.label}</div>
-          </div>
-        ))}
-      </div>
     </div>
   </section>
 
-  <section style="padding:4rem 1.5rem;background:#f9fafb">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:2.5rem">Our Values</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem">
-        {[
-          { icon: '🤝', title: 'Integrity', desc: 'We do what we say. Honest pricing, no surprises.' },
-          { icon: '⭐', title: 'Quality', desc: 'We use quality materials and stand behind our work.' },
-          { icon: '🏠', title: 'Community', desc: `${client.city} is our home. We care about our neighbors.` },
-        ].map(v => (
-          <div style="text-align:center;padding:2rem 1.5rem;background:#fff;border-radius:12px;border:1px solid #e5e7eb">
-            <div style="font-size:2.5rem;margin-bottom:0.75rem">{v.icon}</div>
-            <h3 style="font-weight:700;margin-bottom:0.5rem">{v.title}</h3>
-            <p style="color:#6b7280;font-size:0.875rem;line-height:1.6">{v.desc}</p>
+  <section class="values-section">
+    <div class="container">
+      <div class="values-flex">
+        <div class="values-intro">
+          <div class="section-badge">
+            <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22V12M12 12C12 7 7 3 2 4c0 5 4 9 10 8M12 12c0-5 5-9 10-8-1 5-5 8-10 8"/>
+            </svg>
+            Our Philosophy
           </div>
-        ))}
+          <h2 class="values-main-title">The Values That <span>Drive Us</span> Forward</h2>
+          <p class="values-main-desc">At {client.name}, we believe that landscaping is more than just maintaining yards—it's about creating lasting value and beauty for our community through dedicated service.</p>
+        </div>
+        
+        <div class="values-grid">
+          {[
+            { 
+              num: '01', 
+              title: 'Integrity First', 
+              desc: 'We believe in absolute transparency. Honest pricing, clear timelines, and open communication are the bedrocks of every project we undertake.',
+              icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`
+            },
+            { 
+              num: '02', 
+              title: 'Quality Craft', 
+              desc: 'Good enough is never enough. We use premium materials and precise techniques to ensure your landscape thrives for years to come.',
+              icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
+            },
+            { 
+              num: '03', 
+              title: 'Eco-Minded', 
+              desc: 'We prioritize sustainable practices and local flora to create landscapes that aren\'t just beautiful, but are also in harmony with the local ecosystem.',
+              icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V12M12 12C12 7 7 3 2 4c0 5 4 9 10 8M12 12c0-5 5-9 10-8-1 5-5 8-10 8"/></svg>`
+            },
+            { 
+              num: '04', 
+              title: 'Community Care', 
+              desc: `${client.city} is more than just our service area—it's our home. We take pride in enhancing the beauty of our neighborhoods one yard at a time.`,
+              icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`
+            },
+          ].map(v => (
+            <div class="value-item">
+              <div class="value-number">{v.num}</div>
+              <div class="value-icon-box" style={`color: ${primary}`}>
+                <Fragment set:html={v.icon} />
+              </div>
+              <h3 class="value-title">{v.title}</h3>
+              <p class="value-text">{v.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section style={`padding:4rem 1.5rem;background:${primary};color:#fff;text-align:center`}>
-    <div style="max-width:700px;margin:0 auto">
-      <h2 style="font-size:1.75rem;font-weight:700;margin-bottom:1rem">Ready to Work Together?</h2>
-      <p style="opacity:0.9;margin-bottom:1.5rem">Contact us today for your free estimate.</p>
-      <a href="/contact" style="background:#fff;color:#111;padding:0.75rem 2rem;border-radius:10px;font-weight:700">Get Free Quote</a>
     </div>
   </section>
 
 </Layout>
+
+<style set:html={`
+  :root { --primary: ${primary}; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+  .about-company-section {
+    padding: 8rem 0;
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  /* Image Grid Styles */
+  .image-grid-container {
+    position: relative;
+  }
+  .grid-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 350px;
+    gap: 1.5rem;
+  }
+  .img-box {
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+  .img-box img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  
+  .top-left {
+    border-radius: 80px 0 80px 0;
+  }
+  .top-right.wood-bg {
+    background: #4a3728;
+    background-image: url('https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&q=80');
+    background-size: cover;
+    border-radius: 0 80px 0 80px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .dot-accent {
+    width: 24px; height: 24px;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .bottom-large {
+    grid-column: 1 / span 2;
+    border-radius: 0 120px 0 120px;
+  }
+
+  .watermark-icon {
+    position: absolute;
+    left: -40px; bottom: -40px;
+    z-index: -1;
+    color: #eee;
+  }
+
+  /* Content Styles */
+  .section-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.25rem;
+  }
+  .leaf-icon { width: 20px; height: 20px; }
+
+  .about-title {
+    font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+
+  .about-description {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 580px;
+  }
+
+  .features-and-badge {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .features-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .features-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .check-icon {
+    width: 24px; height: 24px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .experience-badge {
+    background: var(--bg-secondary);
+    padding: 2rem;
+    border-radius: 30px;
+    border-top: 4px solid var(--primary);
+    border-right: 2px solid var(--primary);
+    position: relative;
+    text-align: center;
+    min-width: 180px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+  }
+  .badge-inner { display: flex; flex-direction: column; align-items: center; }
+  .badge-text-top { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+  .badge-number { font-size: 3rem; font-weight: 800; color: var(--text); line-height: 1; margin: 0.25rem 0; }
+  .badge-text-bottom { font-size: 0.85rem; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; }
+  
+  .leaf-float {
+    position: absolute;
+    right: -15px; bottom: 20px;
+    color: var(--primary);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .about-footer {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-learn-more {
+    background: var(--primary);
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+  }
+  .btn-learn-more:hover { transform: translateY(-3px); box-shadow: 0 10px 20px color-mix(in srgb, var(--primary) 30%, transparent); }
+  .arrow { font-size: 1.2rem; line-height: 1; }
+
+  .founder-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .founder-img {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eee;
+  }
+  .founder-text { display: flex; flex-direction: column; }
+  .founder-name { font-weight: 800; color: var(--text); font-size: 1rem; }
+  .founder-role { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+
+  /* Values Section */
+  .values-section {
+    padding: 120px 0;
+    background: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .values-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+  }
+
+  .values-intro {
+    max-width: 700px;
+  }
+
+  .values-main-title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .values-main-title span {
+    color: var(--primary);
+  }
+
+  .values-main-desc {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+
+  .value-item {
+    background: var(--card-bg);
+    padding: 50px 35px;
+    border-radius: 30px;
+    position: relative;
+    border: 1px solid var(--card-border);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  }
+
+  .value-item:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  }
+
+  .value-number {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 50px;
+    font-weight: 900;
+    color: var(--bg-secondary);
+    line-height: 1;
+    z-index: 0;
+    transition: color 0.4s ease;
+  }
+
+  .value-item:hover .value-number {
+    color: color-mix(in srgb, var(--primary) 5%, transparent);
+  }
+
+  .value-icon-box {
+    width: 60px;
+    height: 60px;
+    background: var(--bg-secondary);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease;
+  }
+
+  .value-icon-box :global(svg) {
+    width: 30px;
+    height: 30px;
+  }
+
+  .value-item:hover .value-icon-box {
+    background: var(--primary);
+    color: #fff !important;
+  }
+
+  .value-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .value-text {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 1200px) {
+    .values-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .values-grid {
+      grid-template-columns: 1fr;
+    }
+    .values-section {
+      padding: 80px 0;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .about-grid { grid-template-columns: 1fr; gap: 4rem; }
+    .image-grid-container { max-width: 600px; margin: 0 auto; }
+  }
+
+  @media (max-width: 600px) {
+    .features-and-badge { flex-direction: column; }
+    .experience-badge { width: 100%; box-sizing: border-box; }
+    .about-footer { gap: 2rem; }
+  }
+`}/>

@@ -58,14 +58,16 @@ const primary = client.primaryColor || "#2d5a3d";
               x="50"
               y="50">20</text
             >
-            <text>
-              <textPath
-                href="#circle-path"
-                startOffset="0%"
-                style="font-size:8.5px;fill:#fff;letter-spacing:2.5px;font-weight:600;text-transform:uppercase"
-                >YEARS OF EXPERIENCE COMPANY</textPath
-              >
-            </text>
+            <g class="rotating-text">
+              <text>
+                <textPath
+                  href="#circle-path"
+                  startOffset="0%"
+                  style="font-size:8.5px;fill:#fff;letter-spacing:2.5px;font-weight:600;text-transform:uppercase"
+                  >YEARS OF EXPERIENCE COMPANY</textPath
+                >
+              </text>
+            </g>
           </svg>
         </div>
 
@@ -114,7 +116,7 @@ const primary = client.primaryColor || "#2d5a3d";
           </div>
           <div class="diamond d2">
             <img
-              src="https://images.unsplash.com/photo-1599629954294-16b49d7b11ad?w=500&q=80"
+              src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80"
               alt="Garden work"
             />
           </div>
@@ -187,16 +189,15 @@ const primary = client.primaryColor || "#2d5a3d";
               <div class="service-image-wrapper">
                 <div class="service-mask-image">
                   <img
-                    src={`https://images.unsplash.com/photo-${
-                      [
-                        "1558618666-fcd25c85cd64",
-                        "1599629954294-16b49d7b11ad",
-                        "1416879595882-3373a0480b5b",
-                        "1590682680695-43b964a3ae17",
-                        "1558618666-fcd25c85cd64",
-                        "1599629954294-16b49d7b11ad",
-                      ][i % 6]
-                    }?w=500&q=80`}
+                    src={`/services/${[
+                      "lawn-care",
+                      "garden-design",
+                      "irrigation",
+                      "tree-trimming",
+                      "mulching",
+                      "sod-installation",
+                      "leaf-removal"
+                    ][i % 7]}.png`}
                     alt={service.title}
                   />
                 </div>
@@ -357,7 +358,7 @@ const primary = client.primaryColor || "#2d5a3d";
   /* Hero */
   .hero-section {
     position: relative;
-    background: #f5f5f0;
+    background: var(--bg);
     overflow: hidden;
     min-height: calc(100vh - 112px);
     display: flex;
@@ -386,17 +387,25 @@ const primary = client.primaryColor || "#2d5a3d";
     left: -140px; top: 50%;
     transform: translateY(-50%);
   }
+  .rotating-text {
+    animation: rotateText 20s linear infinite;
+    transform-origin: 50px 50px;
+  }
+  @keyframes rotateText {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
   .hero-icon { margin-bottom: 1rem; margin-top: 0.5rem; }
   .hero-title {
     font-size: clamp(2.2rem, 4.5vw, 3.6rem);
     font-weight: 800;
     line-height: 1.12;
-    color: #111;
+    color: var(--text);
     margin-bottom: 1.25rem;
   }
   .hero-sub {
     font-size: 1.05rem;
-    color: #555;
+    color: var(--text-muted);
     line-height: 1.75;
     max-width: 460px;
     margin-bottom: 2.25rem;
@@ -415,9 +424,9 @@ const primary = client.primaryColor || "#2d5a3d";
   }
   .btn-primary-hero:hover { opacity: 0.88; transform: translateY(-1px); }
   .btn-outline-hero {
-    background: #fff;
-    color: #333;
-    border: 2px solid #ddd;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--card-border);
     padding: 0.85rem 2rem;
     border-radius: 6px;
     font-weight: 700;
@@ -452,8 +461,8 @@ const primary = client.primaryColor || "#2d5a3d";
   /* Trust strip */
   .trust-strip {
     position: relative; z-index: 1;
-    background: #fff;
-    border-top: 1px solid #e8e8e8;
+    background: var(--bg);
+    border-top: 1px solid var(--card-border);
     padding: 1rem 1.5rem;
   }
   .trust-inner {
@@ -464,7 +473,7 @@ const primary = client.primaryColor || "#2d5a3d";
   .trust-item {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #444;
+    color: var(--text-muted);
   }
   .trust-item::first-letter { color: ${primary}; }
 
@@ -479,25 +488,24 @@ const primary = client.primaryColor || "#2d5a3d";
     text-transform: uppercase; display: block;
     margin-bottom: 0.6rem;
   }
-  .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: #111; margin-bottom: 0.75rem; }
-  .section-sub { color: #666; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--text); margin-bottom: 0.75rem; }
+  .section-sub { color: var(--text-muted); max-width: 520px; margin: 0 auto; line-height: 1.7; }
 
-  .services-section { padding: 6rem 1.5rem; background: #fff; }
+  .services-section { padding: 6rem 1.5rem; background: var(--bg); }
   .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
   }
   .service-card {
-    background: #f4f6f3; /* Default light base */
-    background: color-mix(in srgb, ${primary} 5%, #f4f6f3);
+    background: var(--bg-secondary);
     border-radius: 20px 0 20px 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     overflow: visible;
     transition: transform 0.3s ease;
-    border: none;
+    border: 1px solid var(--card-border);
     position: relative;
   }
   .service-card:hover { transform: translateY(-10px); }
@@ -519,8 +527,8 @@ const primary = client.primaryColor || "#2d5a3d";
   }
   .service-icon-circle svg { color: #fff; }
   
-  .service-title { font-weight: 800; font-size: 1.25rem; margin-bottom: 0.75rem; color: #111; }
-  .service-desc { color: #666; font-size: 0.95rem; line-height: 1.6; margin-bottom: 0; }
+  .service-title { font-weight: 800; font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--text); }
+  .service-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 0; }
   
   .service-image-wrapper {
     position: relative;
@@ -559,12 +567,13 @@ const primary = client.primaryColor || "#2d5a3d";
     bottom: 2.5rem;
     width: 44px; height: 44px;
     border-radius: 50%;
-    background: #fff;
-    color: #111;
+    background: var(--card-bg);
+    color: var(--text);
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
     z-index: 2;
+    border: 1px solid var(--card-border);
   }
   
   .service-card:hover .service-arrow-btn {
@@ -684,15 +693,15 @@ const primary = client.primaryColor || "#2d5a3d";
     gap: 1.5rem;
   }
   .testimonial-card {
-    background: #f9f9f7;
+    background: var(--card-bg);
     border-radius: 14px;
     padding: 2rem;
-    border: 1px solid #ebebeb;
+    border: 1px solid var(--card-border);
   }
   .stars { color: #f59e0b; font-size: 1.1rem; margin-bottom: 0.75rem; }
-  .testimonial-text { color: #444; font-style: italic; line-height: 1.75; margin-bottom: 1.25rem; }
-  .testimonial-author strong { display: block; font-weight: 700; color: #111; }
-  .testimonial-author span { font-size: 0.8rem; color: #888; }
+  .testimonial-text { color: var(--text-muted); font-style: italic; line-height: 1.75; margin-bottom: 1.25rem; }
+  .testimonial-author strong { display: block; font-weight: 700; color: var(--text); }
+  .testimonial-author span { font-size: 0.8rem; color: var(--text-muted); }
 
   /* CTA */
   .cta-section {
