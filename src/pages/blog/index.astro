@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import { client } from '../../client.config.js'
+import PageHero from '../../components/PageHero.astro'
 
 let posts = []
 try {
@@ -8,17 +9,16 @@ try {
   posts = (await res.json()).docs || []
 } catch {}
 
-const primary = client.primaryColor || '#2d5a3d'
+const primary = client.primaryColor || '#8b2500'
 ---
 
 <Layout title="Blog" description={`Tips and news from ${client.name}.`}>
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12;text-align:center`}>
-    <div style="max-width:1200px;margin:0 auto">
-      <h1 style="font-size:2.5rem;font-weight:800;margin-bottom:1rem">Blog & Tips</h1>
-      <p style="color:#6b7280;font-size:1.05rem">Expert advice and news from {client.name}.</p>
-    </div>
-  </section>
+  <PageHero 
+    title="Blog & Tips" 
+    image="https://images.unsplash.com/photo-1592150621344-828ec9639a36?w=1600&q=80" 
+    primary={primary}
+  />
 
   <section style="padding:4rem 1.5rem">
     <div style="max-width:1200px;margin:0 auto">

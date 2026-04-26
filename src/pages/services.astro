@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { client } from '../client.config.js'
+import PageHero from '../components/PageHero.astro'
 
 let services = []
 try {
@@ -12,19 +13,16 @@ const displayServices = services.length
   ? services
   : client.services.map((s: string) => ({ title: s, description: `Expert ${s.toLowerCase()} services by licensed professionals in ${client.city}, ${client.state}.` }))
 
-const primary = client.primaryColor || '#2d5a3d'
+const primary = client.primaryColor || '#8b2500'
 ---
 
 <Layout title="Services" description={`Professional ${client.industry} services in ${client.city}, ${client.state}.`}>
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12;text-align:center`}>
-    <div style="max-width:1200px;margin:0 auto">
-      <h1 style="font-size:2.5rem;font-weight:800;margin-bottom:1rem">Our Services</h1>
-      <p style="color:#6b7280;max-width:600px;margin:0 auto;font-size:1.05rem">
-        Professional {client.industry} services for homeowners and businesses in {client.city} and surrounding areas.
-      </p>
-    </div>
-  </section>
+  <PageHero 
+    title="Our Services" 
+    image="https://images.unsplash.com/photo-1599629954294-16b49d7b11ad?w=1600&q=80" 
+    primary={primary}
+  />
 
   <section style="padding:4rem 1.5rem">
     <div style="max-width:1200px;margin:0 auto">

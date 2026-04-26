@@ -1,19 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { client } from '../client.config.js'
-const primary = client.primaryColor || '#2d5a3d'
+import PageHero from '../components/PageHero.astro'
+const primary = client.primaryColor || '#8b2500'
 ---
 
 <Layout title="About Us" description={`Learn about ${client.name} — trusted ${client.industry} professionals in ${client.city}, ${client.state}.`}>
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12;text-align:center`}>
-    <div style="max-width:1200px;margin:0 auto">
-      <h1 style="font-size:2.5rem;font-weight:800;margin-bottom:1rem">About {client.name}</h1>
-      <p style="color:#6b7280;max-width:600px;margin:0 auto;font-size:1.05rem">
-        Trusted {client.industry} professionals proudly serving {client.city} and surrounding communities.
-      </p>
-    </div>
-  </section>
+  <PageHero 
+    title="About Us" 
+    image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80" 
+    primary={primary}
+  />
 
   <section style="padding:4rem 1.5rem">
     <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem;align-items:center">
