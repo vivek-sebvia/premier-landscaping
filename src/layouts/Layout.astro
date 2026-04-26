@@ -30,6 +30,7 @@ const primary = client.primaryColor || '#2d5a3d'
     }
     window.localStorage.setItem('theme', theme);
   </script>
+  <script is:inline src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
   <title>{fullTitle}</title>
   <meta name="description" content={metaDesc} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -485,12 +486,10 @@ const primary = client.primaryColor || '#2d5a3d'
   
     document.getElementById("theme-toggle")?.addEventListener("click", handleToggleClick);
 
-    // Lenis Smooth Scroll Integration
-    import Lenis from 'lenis'
-    
-    const lenis = new Lenis({
+    // Lenis Smooth Scroll Integration (CDN)
+    const lenis = new (window as any).Lenis({
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 2,
